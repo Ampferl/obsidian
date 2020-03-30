@@ -14,7 +14,7 @@
 void fb_write(char *buf)
 {
         char * buffer = buf;
-        int i = 0;
+	int i = 0;
         for(i = 0; buffer[i] != '\0'; i++)
         {
                 write_fb_cell(i*2, buffer[i], COLOR_WHITE, COLOR_BLACK);
