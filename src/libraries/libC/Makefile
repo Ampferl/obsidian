@@ -15,4 +15,4 @@ ASFLAGS = -f elf
 	$(AS) $(ASFLAGS) $< -o $@
 
 clean:
-	rm -rf *.o kernel.elf os.iso bochslog.txt
+	rm -rf *.o kernel.elf os.iso
