@@ -1,5 +1,9 @@
 global outb
 global inb
+global noop
+
+noop:
+	nop
 
 outb:
 	mov al, [esp + 8]
