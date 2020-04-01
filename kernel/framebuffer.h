@@ -7,8 +7,9 @@
 
 void fb_write(char *buf);
 void write_fb_cell(unsigned int i, char c, unsigned char fg, unsigned char bg);
-void move_fb_cursor(unsigned short pos);
+void move_fb_cursor(unsigned int pos);
 void move_fb_cursor_right(void);
+void fb_write_color(char *buf, char fg);
 void move_fb_cursor_left();
 void move_fb_cursor_top();
 void move_fb_cursor_bottom();
@@ -16,6 +17,7 @@ void clear_fb(char fg, char bg);
 void fb_new_line();
 void fb_write_char(char buf);
 void fb_delete_char();
+void fb_write_number(int number);
 
 enum vga_color {
     COLOR_BLACK,

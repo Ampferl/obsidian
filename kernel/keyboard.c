@@ -2,6 +2,7 @@
 #include "framebuffer.h"
 #include "io.h"
 #include "char.h"
+#include "utils.h"
 
 char get_input_keycode()
 {

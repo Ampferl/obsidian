@@ -1,4 +1,4 @@
-OBJECTS = loader.o main.o io.o framebuffer.o keyboard.o char.o
+OBJECTS = loader.o main.o io.o framebuffer.o keyboard.o char.o utils.o
 CC = gcc
 CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
 LDFLAGS = -T link.ld -melf_i386
@@ -17,10 +17,10 @@ os.iso: kernel.elf
 run: os.iso
 	bochs -f bochsrc.txt -q
 
-%.o: ./src/kernel/%.c
+%.o: ./kernel/%.c
 	$(CC) $(CFLAGS) $< -o $@
 
-%.o: ./src/kernel/%.s
+%.o: ./kernel/%.s
 	$(AS) $(ASFLAGS) $< -o $@
 
 clean:

@@ -1,5 +1,6 @@
 #include "framebuffer.h"
 #include "io.h"
+#include "utils.h"
 
 #define FB_CMD_PORT                     0x3D4
 #define FB_DATA_PORT                    0x3D5
@@ -21,11 +22,32 @@ void fb_write(char *buf)
 	cursor_pos = start_pos;
 }
 
+void fb_write_color(char *buf, char fg)
+{
+	int start_pos = cursor_pos;
+        char * buffer = buf;
+        int i = 0;
+        for(i = 0; buffer[i] != '\0'; i++)
+        {
+                write_fb_cell(start_pos*2, buffer[i], fg, COLOR_BLACK);
+                start_pos += 1;
+        }
+        move_fb_cursor(start_pos);
+        cursor_pos = start_pos;
+}
+
 void fb_write_char(char buf)
 {
 	write_fb_cell(cursor_pos*2, buf, COLOR_WHITE, COLOR_BLACK);
 	cursor_pos += 1;
 	move_fb_cursor(cursor_pos);
+}
+
+void fb_write_number(int number)
+{
+	char str_num[digit_count(number)+1];
+	itoa(number, str_num);
+	fb_write(str_num);
 }
 
 void fb_delete_char()
@@ -70,7 +92,7 @@ void move_fb_cursor_bottom()
 	move_fb_cursor(cursor_pos);
 }
 
-void move_fb_cursor(unsigned short pos)
+void move_fb_cursor(unsigned int pos)
 {
         outb(FB_CMD_PORT, FB_HIGH_BYTE_CMD);
         outb(FB_DATA_PORT, ((pos >> 8) & 0x00FF));
