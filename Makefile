@@ -1,32 +1,29 @@
-OBJECTS = loader.o main.o io.o framebuffer.o
-LIBC_PATH = -I./libraries/libC/
-CC = gcc
-CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
-LDFLAGS = -T link.ld -melf_i386
-AS = nasm
-ASFLAGS = -f elf
+LIBS = -Ilibraries/libc/
+KERNEL_PATH = kernel/
+GPPPARAMS = -m32 $(LIBS) -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -Wwrite-strings
+ASPARAMS = --32
+LDPARAMS = -melf_i386
 
-all: kernel.elf
+objects = loader.o kernel.o gdt.o
 
-kernel.elf:
-	@make --no-print-directory -C kernel
-	@make --no-print-directory -C libraries/libC
+build: $(objects)
 
-os.iso: kernel.elf
-	cp kernel/kernel.elf iso/boot/kernel.elf
+ 
+mykernel.elf: linker.ld $(objects)
+	ld $(LDPARAMS) -T $< -o $@ $(objects)
+
+os.iso: mykernel.elf
+	cp mykernel.elf iso/boot/mykernel.elf
 	genisoimage -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -A os -input-charset utf8 -quiet -boot-info-table -o os.iso iso
 
 run: os.iso
 	bochs -f boot-config.txt -q
 
-%.o: %.c
-	$(CC) $(LIBC_PATH) $(CFLAGS) $< -o $@
+%.o: $(KERNEL_PATH)%.cpp
+	g++ $(GPPPARAMS) -o $@ -c $<
 
-%.o: %.s
-	$(AS) $(ASFLAGS) $< -o $@
+%.o: $(KERNEL_PATH)%.s
+	as $(ASPARAMS) -o $@ $<
 
 clean:
-	@echo 'Clean Kernel'
-	@make --no-print-directory -C kernel clean
-	@make --no-print-directory -C libraries/libC clean
-	rm -rf *.o kernel.elf os.iso boot-log.txt
+	rm -rf *.o mykernel.elf os.iso boot-log.txt a.out
