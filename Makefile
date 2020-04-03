@@ -1,10 +1,10 @@
-LIBS = -Ilibraries/libc/
+LIBS = -Ilibraries/
 KERNEL_PATH = kernel/
-GPPPARAMS = -m32 $(LIBS) -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -Wwrite-strings
+GPPPARAMS = -m32 $(LIBS) -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -Wno-write-strings
 ASPARAMS = --32
 LDPARAMS = -melf_i386
 
-objects = loader.o kernel.o gdt.o port.o
+objects = loader.o kernel.o gdt.o port.o interrupt.o interrupts.o
 
 build: $(objects)
 

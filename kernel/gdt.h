@@ -1,7 +1,7 @@
 #ifndef __MYOS__GDT_H
 #define __MYOS__GDT_H
 
-#include <types.h>
+#include <libc/types.h>
 
     
     class GlobalDescriptorTable
