@@ -1,4 +1,6 @@
 #include "port.h"
+using namespace obsidian::common;
+using namespace obsidian::hardwarecom;
 
 
 Port::Port(uint16_t portnumber){

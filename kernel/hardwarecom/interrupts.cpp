@@ -1,4 +1,6 @@
 #include "interrupts.h"
+using namespace obsidian::common;
+using namespace obsidian::hardwarecom;
 
 void printf(char* str);
 

@@ -1,4 +1,9 @@
 #include "mouse.h"
+
+using namespace obsidian::common;
+using namespace obsidian::drivers;
+using namespace obsidian::hardwarecom;
+
 void printf(char*);
 
 MouseEventHandler::MouseEventHandler(){

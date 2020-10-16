@@ -1,5 +1,6 @@
 #include "gdt.h"
-
+using namespace obsidian;
+using namespace obsidian::common;
 
 GlobalDescriptorTable::GlobalDescriptorTable()
     : nullSegmentSelector(0, 0, 0),

@@ -1,5 +1,10 @@
 #include "keyboard.h"
 
+using namespace obsidian::common;
+using namespace obsidian::drivers;
+using namespace obsidian::hardwarecom;
+
+
 
 KeyboardEventHandler::KeyboardEventHandler(){
 

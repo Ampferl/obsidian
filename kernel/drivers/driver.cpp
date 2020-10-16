@@ -1,4 +1,5 @@
 #include "driver.h"
+using namespace obsidian::drivers;
 
 Driver::Driver(){
 
