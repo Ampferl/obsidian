@@ -2,19 +2,10 @@ GCCPARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-excep
 ASPARAMS = --32
 LDPARAMS = -melf_i386
 
-objects = loader.o gdt.o port.o kernel.o
+objects = loader.o gdt.o port.o kernel.o interruptstubs.o interrupts.o
 
-%.o: %.cpp
-	gcc $(GCCPARAMS) -c -o $@ $<
-
-%.o: %.s
-	as $(ASPARAMS) -o $@ $<
-
-obsidian.bin: linker.ld $(objects)
-	ld $(LDPARAMS) -T $< -o $@ $(objects)
-
-obsidian.bin: linker.ld $(objects)
-	ld $(LDPARAMS) -T $< -o $@ $(objects)
+run: obsidian.iso
+	qemu-system-i386 obsidian.iso
 
 obsidian.iso: obsidian.bin
 	mkdir iso
@@ -31,8 +22,19 @@ obsidian.iso: obsidian.bin
 	grub-mkrescue --output=obsidian.iso iso
 	rm -rf iso
 
-run: obsidian.iso
-	qemu-system-i386 obsidian.iso
+%.o: %.cpp
+	gcc $(GCCPARAMS) -c -o $@ $<
+
+%.o: %.s
+	as $(ASPARAMS) -o $@ $<
+
+obsidian.bin: linker.ld $(objects)
+	ld $(LDPARAMS) -T $< -o $@ $(objects)
+
+obsidian.bin: linker.ld $(objects)
+	ld $(LDPARAMS) -T $< -o $@ $(objects)
+
+
 
 clean:
 	sudo rm *.o *~ iso/ *.iso -r *.bin
