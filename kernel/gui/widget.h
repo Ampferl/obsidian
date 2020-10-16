@@ -3,12 +3,13 @@
 
     #include "../common/types.h"
     #include "../common/graphicscontext.h"
+    #include "../drivers/keyboard.h"
 
     namespace obsidian{
 
         namespace gui{
 
-            class Widget{
+            class Widget : public obsidian::drivers::KeyboardEventHandler{
                 protected:
                     Widget* parent;
                     common::int32_t x;
@@ -26,15 +27,14 @@
                     ~Widget();
 
                     virtual void GetFocus(Widget* widget);
-                    virtual void ModelToScreen(common::int32_t &x; common::int32_t &y);
+                    virtual void ModelToScreen(common::int32_t &x, common::int32_t &y);
+                    virtual bool ContainsCoordinate(common::int32_t x, common::int32_t y);
 
-                    virtual void Draw(GraphicsContext *gc);
-                    virtual void OnMouseDown(common::int32_t x, common::int32_t, y);
-                    virtual void OnMouseUp(common::int32_t x, common::int32_t y);
+                    virtual void Draw(common::GraphicsContext* gc);
+                    virtual void OnMouseDown(common::int32_t x, common::int32_t y, common::uint8_t button);
+                    virtual void OnMouseUp(common::int32_t x, common::int32_t y, common::uint8_t button);
                     virtual void OnMouseMove(common::int32_t oldx, common::int32_t oldy, common::int32_t newx, common::int32_t newy);
 
-                    virtual void OnKeyDown(common::int32_t x, common::int32_t y);
-                    virtual void OnKeyUp(common::int32_t x, common::int32_t y);
             };
 
             class CompositeWidget : public Widget{
@@ -44,18 +44,19 @@
                     Widget* focussedChild;
 
                 public:
-                    CompositeWidget(Widget* parent, common::int32_t x, common::int32_t y, common::int32_t w, common::int32_t h, common::int8_t r, common::int8_t g, common::int8_t b);
+                    CompositeWidget(Widget* parent, common::int32_t x, common::int32_t y, common::int32_t w, common::int32_t h, common::uint8_t r, common::uint8_t g, common::uint8_t b);
                     ~CompositeWidget();
 
                     virtual void GetFocus(Widget* widget);
+                    virtual bool AddChild(Widget* child);
 
-                    virtual void Draw(GraphicsContext *gc);
-                    virtual void OnMouseDown(common::int32_t x, common::int32_t, y);
-                    virtual void OnMouseUp(common::int32_t x, common::int32_t y);
+                    virtual void Draw(common::GraphicsContext* gc);
+                    virtual void OnMouseDown(common::int32_t x, common::int32_t y, common::uint8_t button);
+                    virtual void OnMouseUp(common::int32_t x, common::int32_t y, common::uint8_t button);
                     virtual void OnMouseMove(common::int32_t oldx, common::int32_t oldy, common::int32_t newx, common::int32_t newy);
 
-                    virtual void OnKeyDown(common::int32_t x, common::int32_t y);
-                    virtual void OnKeyUp(common::int32_t x, common::int32_t y);
+                    virtual void OnKeyDown(char);
+                    virtual void OnKeyUp(char);
             };
         }
     }

@@ -7,7 +7,7 @@ namespace obsidian
 {
     namespace common
     {
-        typedef GraphicsContext VideoGraphicsArray;
+        typedef obsidian::drivers::VideoGraphicsArray GraphicsContext;
     }
 }
 
