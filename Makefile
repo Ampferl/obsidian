@@ -1,4 +1,4 @@
-GCCPARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore
+GCCPARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -Wwrite-strings -fno-leading-underscore
 ASPARAMS = --32
 LDPARAMS = -melf_i386
 
@@ -14,5 +14,26 @@ objects = loader.o kernel.o
 obsidian.bin: linker.ld $(objects)
 	ld $(LDPARAMS) -T $< -o $@ $(objects)
 
-install: obsidian.bin
-	sudo cp $< /boot/obsidian.bin
+obsidian.bin: linker.ld $(objects)
+	ld $(LDPARAMS) -T $< -o $@ $(objects)
+
+obsidian.iso: obsidian.bin
+	mkdir iso
+	mkdir iso/boot
+	mkdir iso/boot/grub
+	cp obsidian.bin iso/boot/obsidian.bin
+	echo 'set timeout=0'                      > iso/boot/grub/grub.cfg
+	echo 'set default=0'                     >> iso/boot/grub/grub.cfg
+	echo ''                                  >> iso/boot/grub/grub.cfg
+	echo 'menuentry "Obsidian" {'			 >> iso/boot/grub/grub.cfg
+	echo '  multiboot /boot/obsidian.bin'    >> iso/boot/grub/grub.cfg
+	echo '  boot'                            >> iso/boot/grub/grub.cfg
+	echo '}'                                 >> iso/boot/grub/grub.cfg
+	grub-mkrescue --output=obsidian.iso iso
+	rm -rf iso
+
+run: obsidian.iso
+	qemu-system-i386 obsidian.iso
+
+clean:
+	sudo rm *.o *~ iso/ *.iso -r
