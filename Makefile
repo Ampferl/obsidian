@@ -1,9 +1,8 @@
-GCCPARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -Wwrite-strings -fno-leading-underscore
+GCCPARAMS = -m32 -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore
 ASPARAMS = --32
 LDPARAMS = -melf_i386
 
-objects = loader.o kernel.o
-
+objects = loader.o gdt.o kernel.o
 
 %.o: %.cpp
 	gcc $(GCCPARAMS) -c -o $@ $<
@@ -36,4 +35,4 @@ run: obsidian.iso
 	qemu-system-i386 obsidian.iso
 
 clean:
-	sudo rm *.o *~ iso/ *.iso -r
+	sudo rm *.o *~ iso/ *.iso -r *.bin
