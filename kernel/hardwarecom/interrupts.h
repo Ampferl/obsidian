@@ -98,7 +98,7 @@
                     Port8BitSlow programmableInterruptControllerSlaveDataPort;
 
                 public:
-                    InterruptManager(obsidian::common::uint16_t hardwareInterruptOffset, myos::GlobalDescriptorTable* globalDescriptorTable);
+                    InterruptManager(obsidian::common::uint16_t hardwareInterruptOffset, obsidian::GlobalDescriptorTable* globalDescriptorTable);
                     ~InterruptManager();
                     obsidian::common::uint16_t HardwareInterruptOffset();
                     void Activate();

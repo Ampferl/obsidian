@@ -1,6 +1,7 @@
 #include "common/types.h"
 #include "gdt.h"
 #include "hardwarecom/interrupts.h"
+#include "hardwarecom/pci.h"
 #include "drivers/driver.h"
 #include "drivers/keyboard.h"
 #include "drivers/mouse.h"
@@ -119,6 +120,9 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     PrintfKeyboardEventHandler kbhandler;
     KeyboardDriver keyboard(&interrupts, &kbhandler);
     drvManager.AddDriver(&keyboard);
+
+    PeripheralComponentInterconnectController PCIController;
+    PCIController.SelectDrivers(&drvManager);
 
     drvManager.ActivateAll();
     interrupts.Activate();
