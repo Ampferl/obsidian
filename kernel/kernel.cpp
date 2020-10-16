@@ -8,6 +8,7 @@
 #include "drivers/vga.h"
 #include "gui/desktop.h"
 #include "gui/window.h"
+#include "gui/render.h"
 
 #define GRAPHICSMODE
 
@@ -144,6 +145,8 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 
     VideoGraphicsArray vga;
 
+    Render rend(320,200);
+
     drvManager.ActivateAll();
 
     #ifdef GRAPHICSMODE
@@ -158,7 +161,8 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 
     while(1){
     #ifdef GRAPHICSMODE
-        desktop.Draw(&vga);
+        desktop.Draw(&rend);
+        rend.display(&vga);
     #endif
     }
 }

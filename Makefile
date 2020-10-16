@@ -15,6 +15,7 @@ objects = 	obj/loader.o \
 			obj/gui/widget.o \
 		  	obj/gui/window.o \
 		  	obj/gui/desktop.o \
+			obj/gui/render.o \
 			obj/kernel.o
 
 run: obsidian.iso
