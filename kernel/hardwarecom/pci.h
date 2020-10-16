@@ -9,6 +9,19 @@
     namespace obsidian{
 
         namespace hardwarecom{
+            enum BaseAddressRegisterType{
+                MemoryMapping = 0,
+                InputOutput = 1
+            };
+
+            class BaseAddressRegister{
+            public:
+                bool prefetchable;
+                obsidian::common::uint8_t* address;
+                obsidian::common::uint32_t size;
+                BaseAddressRegisterType type;
+            };
+
             class PeripheralComponentInterconnectDeviceDescriptor{
             public:
                 obsidian::common::uint32_t portBase;
@@ -43,8 +56,10 @@
                 void Write(obsidian::common::uint16_t bus, obsidian::common::uint16_t device, obsidian::common::uint16_t function, obsidian::common::uint32_t registeroffset, obsidian::common::uint32_t value);
                 bool DeviceHasFunctions(obsidian::common::uint16_t bus, obsidian::common::uint16_t device);
 
-                void SelectDrivers(obsidian::drivers::DriverManager* driverManager);
+                void SelectDrivers(obsidian::drivers::DriverManager* driverManager, obsidian::hardwarecom::InterruptManager* interrupts);
+                obsidian::drivers::Driver* GetDriver(PeripheralComponentInterconnectDeviceDescriptor dev, obsidian::hardwarecom::InterruptManager* interrupts);
                 PeripheralComponentInterconnectDeviceDescriptor GetDeviceDescriptor(obsidian::common::uint16_t bus, obsidian::common::uint16_t device, obsidian::common::uint16_t function);
+                BaseAddressRegister GetBaseAddressRegister(obsidian::common::uint16_t bus, obsidian::common::uint16_t device, obsidian::common::uint16_t function, obsidian::common::uint16_t bar);
             };
         }
     }
