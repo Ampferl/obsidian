@@ -136,8 +136,11 @@ Driver* PeripheralComponentInterconnectController::GetDriver(PeripheralComponent
         case 0x8086: // Intel
             switch(dev.device_id)
             {
-                case 0x100E: // i5-5300U
-                    printf("Intel Core i5-5300U");
+                case 0x100E: // 82540EM Gigabit Ethernet Controller
+                    printf("Intel 82540EM Gigabit Ethernet Controller");
+                    break;
+                case 0xa0f0: // Wi-Fi 6 AX201
+                    printf("Intel Wi-Fi 6 AX201");
                     break;
             }
             break;
